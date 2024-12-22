@@ -1,0 +1,38 @@
+# virtual
+venv/
+env/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# environment
+*.env
+*.flaskenv
+
+# logs
+*.log
+
+# IDE/Editor 
+.vscode/
+.idea/
+
+# tmp files
+*.bak
+*.swp
+*.tmp
+
+# Database dumps
+*.sql
+*.dump
+
+# Packaging
+*.egg-info/
+dist/
+build/
+
+# Cache and config
+*.ini
+*.cfg
+*.cache
