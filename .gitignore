@@ -1,0 +1,11 @@
+# virtual
+app/venv/
+
+# Byte-compiled / optimized / DLL files
+app/__pycache__/
+__pycache__/
+# IDE/Editor 
+.vscode
+
+#config
+config.py
