@@ -1,0 +1,40 @@
+{% extends "base.html" %} {% block title %}Topics{% endblock %}
+{% block content %}
+<form action="{{ url_for('topic.update', topic_id=topic.id) }}" method="POST">
+    <h3 align="center">Edit Topic</h3>
+    <div class="form-group">
+        <label for="topic_name">Name</label>
+        <input
+            type="text"
+            class="form-control"
+            id="topic_name"
+            name="topic_name"
+            value="{{ topic.topic_name }}"
+
+        />
+    </div>
+    <div class="form-group">
+        <label for="description">Description</label>
+        <textarea
+            class="form-control"
+            id="description"
+            name="description"
+        >
+        {{ topic.description }}
+        </textarea>
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="max_mark">Max mark</label>
+        <input
+            type="number"
+            class="form-control"
+            id="max_mark"
+            name="max_mark"
+            value="{{ topic.max_mark }}"
+        />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Update</button>
+</form>
+{% endblock %}

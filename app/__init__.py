@@ -1,7 +1,9 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from config import Config
+
+from functools import wraps
 
 db = SQLAlchemy()
 
@@ -21,6 +23,11 @@ def create_app():
             super_admin = models.Role(role_name='super_admin')
             db.session.add_all([student, teacher, super_admin])
             db.session.commit()
+        
+        if models.Topic.query.count() == 0:
+            topic = models.Topic(topic_name='test', description='qwodqwkodqkw dopqw kowdqp qpo owpd kqpwo dpoq opwd opqw dop ', max_mark=5.5)
+            db.session.add(topic)
+            db.session.commit()
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
@@ -32,8 +39,26 @@ def create_app():
 
     from .views import views
     from .auth import auth
+    from .topics import topic
     
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(topic, url_prefix='/')
 
     return app
+
+def role_required(required_role):
+    def wrapper(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+
+            from app import models
+
+            role = models.Role.query.filter_by(id=current_user.role_id).first()
+
+            if role.role_name not in required_role:
+                return jsonify({"error": "Access denied"}), 403
+
+            return f(*args, **kwargs)
+        return decorated_function
+    return wrapper

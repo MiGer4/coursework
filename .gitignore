@@ -1,8 +1,8 @@
 # virtual
-app/venv/
+venv/
 
 # Byte-compiled / optimized / DLL files
-app/__pycache__/
+app/__pycache__
 __pycache__/
 # IDE/Editor 
 .vscode

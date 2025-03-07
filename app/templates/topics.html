@@ -1,0 +1,59 @@
+{% extends "base.html" %} {% block title %}Topics{% endblock %}
+{% block content %}
+<ul class="list-group" id="topics">
+    {% for topic in topics %}
+        <li class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ topic.topic_name }}</h5>
+                <small>{{ topic.max_mark }} pts</small>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <p class="mb-1 col-9">{{ topic.description }}</p>
+                    <a class="mb-1 col" href="#">Read</a>
+                    {% if user.role_id != 1 %}                     <!-- not student role -->
+                        <a class="mb-1 col" href="{{url_for('topic.edit_form', topic_id=topic.id)}}">Edit</a>
+                        <a class="mb-1 col" href="{{url_for('topic.delete', topic_id=topic.id)}}">Delete</a>
+                    {% endif %}
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+</ul>
+
+{% if user.role_id != 1 %}                                          <!-- not student role -->
+    <form action="{{ url_for('topic.add') }}" method="POST">
+        <h3 align="center">Add Topic</h3>
+        <div class="form-group">
+            <label for="topic_name">Name</label>
+            <input
+                type="text"
+                class="form-control"
+                id="topic_name"
+                name="topic_name"
+            />
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea
+                class="form-control"
+                id="description"
+                name="description"
+            >
+            </textarea>
+        </div>
+        <br />
+        <div class="form-group">
+            <label for="max_mark">Max mark</label>
+            <input
+                type="number"
+                class="form-control"
+                id="max_mark"
+                name="max_mark"
+            />
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary">Create</button>
+</form>
+{% endif %}
+{% endblock%}
