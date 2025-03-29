@@ -22,8 +22,12 @@ def edit_form(topic_id):
 @login_required
 @role_required(['teacher', 'super_admin'])
 def update(topic_id):
+    topic = Topic.query.get_or_404(topic_id)
     if request.method == 'POST':
-        topic = Topic.query.get_or_404(topic_id)
+        topic_name = request.form['topic_name']
+        if topic_name != topic.topic_name and Topic.query.filter_by(topic_name=topic_name).first():
+            flash('Topic with this name already exists!', 'error')
+            return render_template("edit_topic.html", topic=topic, user=current_user)
         topic.topic_name = request.form['topic_name']
         topic.description = request.form['description']
         topic.max_mark = float(request.form['max_mark'])
@@ -51,17 +55,20 @@ def add():
     if request.method == 'POST':
         topic_name = request.form.get('topic_name')
         description = request.form.get('description')
-        max_mark = request.form.get('max_mark')
+        max_mark = float(request.form.get('max_mark'))
 
         topic = Topic.query.filter_by(topic_name=topic_name).first()
 
         if topic:
             flash('Topic with this name already exists!', 'error')
             return redirect(url_for('topic.topic_list'))
-        else:
-            new_topic = Topic(topic_name=topic_name, description=description, max_mark=max_mark)
-            db.session.add(new_topic)
-            db.session.commit()
-            flash('Topic created!', 'success')
+        if max_mark < 0:
+            flash('Max mark must be greater then 0', 'error')
+            return redirect(url_for('topic.topic_list'))
+        
+        new_topic = Topic(topic_name=topic_name, description=description, max_mark=max_mark)
+        db.session.add(new_topic)
+        db.session.commit()
+        flash('Topic created!', 'success')
     
     return redirect(url_for('topic.topic_list'))

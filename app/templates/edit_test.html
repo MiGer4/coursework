@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block title %}Update test{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-center">
+    <form action="{{ url_for('test.update', test_id=test.id) }}" method="post" class="w-50">
+        <h3 align="center">Update Test</h3>
+        <label for="input_data">Input:</label>
+        <textarea
+            name="input_data"
+            class="form-control"
+            required>{{test.values["input"]}}</textarea>
+        
+        <label for="expected_output">Expected Output:</label>
+        <textarea
+            name="expected_output"
+            class="form-control"
+            required>{{test.values["output"]}}</textarea>
+
+        <label for="points">Points</label>
+        <input 
+            type="number"
+            name="points"
+            id="points"
+            step="0.01"
+            min="0"
+            required
+            value="{{ test.points }}">
+        
+        <button type="submit" class="btn btn-primary mt-2">Edit Test</button>
+    </form>
+</div>
+{% endblock %}

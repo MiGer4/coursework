@@ -7,5 +7,8 @@ __pycache__/
 # IDE/Editor 
 .vscode
 
-#config
+# submissions
+submissions/
+
+# config
 config.py

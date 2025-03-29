@@ -10,10 +10,10 @@
             <div class="container">
                 <div class="row">
                     <p class="mb-1 col-9">{{ topic.description }}</p>
-                    <a class="mb-1 col" href="#">Read</a>
+                    <a class="mb-1 col" href="{{ url_for('problem.problem_list_of_topic', topic_id=topic.id) }}">Problems</a>
                     {% if user.role_id != 1 %}                     <!-- not student role -->
-                        <a class="mb-1 col" href="{{url_for('topic.edit_form', topic_id=topic.id)}}">Edit</a>
-                        <a class="mb-1 col" href="{{url_for('topic.delete', topic_id=topic.id)}}">Delete</a>
+                        <a class="mb-1 col" href="{{ url_for('topic.edit_form', topic_id=topic.id) }}">Edit</a>
+                        <a class="mb-1 col" href="{{ url_for('topic.delete', topic_id=topic.id) }}">Delete</a>
                     {% endif %}
                 </div>
             </div>
@@ -22,7 +22,9 @@
 </ul>
 
 {% if user.role_id != 1 %}                                          <!-- not student role -->
-    <form action="{{ url_for('topic.add') }}" method="POST">
+    
+<div class="d-flex justify-content-center">
+    <form action="{{ url_for('topic.add') }}" method="POST" class="w-50">
         <h3 align="center">Add Topic</h3>
         <div class="form-group">
             <label for="topic_name">Name</label>
@@ -31,6 +33,7 @@
                 class="form-control"
                 id="topic_name"
                 name="topic_name"
+                required
             />
         </div>
         <div class="form-group">
@@ -39,21 +42,24 @@
                 class="form-control"
                 id="description"
                 name="description"
-            >
-            </textarea>
+                required
+            ></textarea>
         </div>
-        <br />
+
         <div class="form-group">
             <label for="max_mark">Max mark</label>
             <input
                 type="number"
+                step="0.01"
+                min="0"
                 class="form-control"
                 id="max_mark"
                 name="max_mark"
-            />
+                required
+            >
         </div>
-        <br />
         <button type="submit" class="btn btn-primary">Create</button>
-</form>
+    </form>
+</div>
 {% endif %}
-{% endblock%}
+{% endblock %}

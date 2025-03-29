@@ -2,3 +2,9 @@
     background-color: darkorange;
     border-radius: 10px;
 }
+form {
+    border: 1px solid rgba(0, 0, 0, .125);
+    border-radius: 10px;
+    padding: 5px;
+    margin-top: 10px;
+}

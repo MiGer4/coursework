@@ -40,11 +40,14 @@ def create_app():
     from .views import views
     from .auth import auth
     from .topics import topic
+    from .problems import problem
+    from .tests import test
     
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(topic, url_prefix='/')
-
+    app.register_blueprint(problem, url_prefix='/topic')
+    app.register_blueprint(test, url_prefix='/problem')
     return app
 
 def role_required(required_role):
