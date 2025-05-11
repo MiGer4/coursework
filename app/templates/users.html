@@ -1,0 +1,48 @@
+{% extends "base.html" %} {% block title %}Користувачі{% endblock %}
+{% block content %}
+<ul class="list-group" id="users">
+    <div class="container">
+        <div class="row">
+            <div class="col-3">
+                Email
+            </div>
+            <div class="col-2">
+                Роль
+            </div>
+            <div class="col-1">
+                Статус
+            </div>
+        </div>
+        {% for us in users %}
+            <li class="list-group-item list-group-item-action">
+                <div class="row">
+                    <div class="col-3">
+                        {{ us.email }}
+                    </div>
+                    <div class="col-2">
+                        {{ us.role.role_name }}
+                    </div>
+                    <div class="col-1">
+                        {{ us.status }}
+                    </div>
+                    {% if user.role_id == 3 %}
+                        {% if us.email != user.email %}
+                            <div class="col">
+                                <a class="mb-1 col" href="{{ url_for('users.edit_form_role', user_id=us.id) }}">Змінити роль</a>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                    {% if us.role_id != 3 %}
+                        <div class="col">
+                            <a class="mb-1 col" href="{{ url_for('users.edit_form_status', user_id=us.id) }}">Змінити статус</a>
+                        </div>
+                        <div class="col">
+                            <a class="mb-1 col" href="{{ url_for('users.show_user_problems', user_id=us.id) }}">Задачі</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </li>
+        {% endfor %}
+    </div>
+</ul>
+{% endblock %}

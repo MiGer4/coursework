@@ -42,12 +42,16 @@ def create_app():
     from .topics import topic
     from .problems import problem
     from .tests import test
+    from .users import users
+    from .submissions import submissions
     
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(topic, url_prefix='/')
     app.register_blueprint(problem, url_prefix='/topic')
     app.register_blueprint(test, url_prefix='/problem')
+    app.register_blueprint(users, url_prefix='/')
+    app.register_blueprint(submissions, url_prefix='/')
     return app
 
 def role_required(required_role):

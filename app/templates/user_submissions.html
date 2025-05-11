@@ -1,0 +1,39 @@
+{% extends "base.html" %} {% block title %}Надсилання{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Надсилання</h1>
+    {% if submissions %}
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered table-striped align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Назва задачі</th>
+                        <th scope="col">Тема</th>
+                        <th scope="col">Бал</th>
+                        <th scope="col">Дата надсилання</th>
+                        <th scope="col">Код</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for submission in submissions %}
+                        <tr class="{% if submission.score == 100 %}table-success{% else %}table-warning{% endif %}">
+                            <td>{{ submission.problem.problem_name }}</td>
+                            <td>{{ submission.problem.topic.topic_name }}</td>
+                            <td>{{ submission.score }}</td>
+                            <td>{{ submission.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                            <td><a href="{{url_for('submissions.show_submission_code', submission_id=submission.id)}}">Показати</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            Наразі у вас немає жодних надсилань.
+        </div>
+    {% endif %}
+    <div class="d-flex justify-content-center">
+        <a href="{{ url_for('views.index') }}" class="btn btn-primary">Повернутися на головну</a>
+    </div>
+</div>
+{% endblock %}

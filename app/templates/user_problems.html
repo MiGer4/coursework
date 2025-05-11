@@ -1,0 +1,50 @@
+{% extends "base.html" %} {% block title %}Задачі користувача{% endblock %}
+{% block content %}
+<h3 align="center">Задачі {{ us.get_user_name()}}</h3>
+<ul class="list-group" id="users">
+    <div class="row">
+            <div class="col">
+                Тема
+            </div>
+            <div class="col">
+                Задача
+            </div>
+            <div class="col"></div>
+        </div>
+    {% for assigned_problem in us.assigned_problems %}
+        <li class="list-group-item list-group-item-action">
+            <div class="row">
+                <div class="col">
+                    {{ assigned_problem.problem.topic.topic_name }}
+                </div>
+                <div class="col">
+                    {{ assigned_problem.problem.problem_name }}
+                </div>
+                <div class="col">
+                    <a href="{{url_for('users.delete_problem', user_id = us.id, problem_id = assigned_problem.problem_id    )}}">Видалити</a>
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+</ul>
+<div class="d-flex justify-content-center">
+    <form action="{{ url_for('users.add_problem', user_id=us.id) }}" method="POST" class="w-50">
+        <h3 align="center">Призначити задачу користувачу {{ us.get_user_name() }}</h3>
+        <div class="form-group">
+            <label for="problem">Виберіть задачу:</label>
+            <select
+                    type="text"
+                    class="form-control"
+                    id="problem_id"
+                    name="problem_id"
+                    required
+                >
+                {% for problem in unassigned_problems %}
+                    <option value="{{ problem.id }}">{{ problem.problem_name }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary">Добавити</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

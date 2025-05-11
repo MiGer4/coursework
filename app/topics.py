@@ -8,7 +8,12 @@ topic = Blueprint('topic', __name__)
 @topic.route('/topics')
 @login_required
 def topic_list():
-    topics = Topic.query.all()
+    if current_user.role.role_name == 'student':
+        topics = Topic.query.filter(Topic.status =='active').all()
+    elif current_user.role.role_name == 'teacher':
+        topics = Topic.query.filter(Topic.status != 'deleted').all()
+    else:
+        topics = Topic.query.all()
     return render_template("topics.html", user=current_user, topics=topics)
 
 @topic.route('/topic/edit/<int:topic_id>')
@@ -31,21 +36,23 @@ def update(topic_id):
         topic.topic_name = request.form['topic_name']
         topic.description = request.form['description']
         topic.max_mark = float(request.form['max_mark'])
+        topic.status = request.form['status']
+        for problem in topic.problems:
+            problem.status = topic.status
         db.session.commit()
         flash('Topic update successfully', 'success')
         return redirect(url_for('topic.topic_list'))
         #flash('Max mark must be float value!', 'error')
-    return render_template("edit_topic.html", topic=topic, user=current_user)
+    return redirect(url_for("edit_topic.html", topic=topic, user=current_user))
 
 @topic.route('/topic/<int:topic_id>/delete', methods=['GET'])
 @login_required
 @role_required(['teacher', 'super_admin'])
 def delete(topic_id):
     topic = Topic.query.get_or_404(topic_id)
-    db.session.delete(topic)
+    topic.status = 'deleted'
     db.session.commit()
     flash('Topic deleted successfully', 'success')
-    
     return redirect(url_for('topic.topic_list'))
 
 @topic.route('/topic/add', methods=['POST', 'GET'])

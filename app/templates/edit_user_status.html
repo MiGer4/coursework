@@ -1,0 +1,24 @@
+{% extends "base.html" %} {% block title %}Update test{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-center">
+    <form action="{{ url_for('users.update_user_status', user_id=us.id) }}" method="POST" class="w-50">
+        <h3 align="center">Редагувати статус користувача {{ us.get_user_name() }}</h3>
+        <div class="form-group">
+            <label for="status">Статус</label>
+            <select
+                type="text"
+                class="form-control"
+                id="status"
+                name="status"
+                required
+            >
+                <option value="">Оберіть статус</option>
+                <option value="pending" {% if us.status == 'pending'%} selected {% endif %}>Очікує</option>
+                <option value="approved" {% if us.status == 'approved'%} selected {% endif %}>Підтверджено</option>
+                <option value="deleted" {% if us.status == 'deleted'%} selected {% endif %}>Видалено</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Змінити</button>
+    </form>
+</div>
+{% endblock %}

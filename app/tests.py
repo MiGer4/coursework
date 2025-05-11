@@ -37,11 +37,13 @@ def update(test_id):
     test = Test.query.get_or_404(test_id)
     problem = Problem.query.get_or_404(test.problem_id)
     topic = Topic.query.get_or_404(problem.topic_id)
+    status = request.form.get('status')
     test.values = {
         "input" : request.form.get('input_data'),
         "output" : request.form.get('expected_output')
     }
     test.points = float(request.form.get('points'))
+    test.status = status
     db.session.commit()
     flash('Test updated successfully', 'success')
     return redirect(url_for('problem.show_problem', problem_id=problem.id, topic_id=topic.id))
@@ -51,9 +53,7 @@ def update(test_id):
 @role_required(['teacher', 'super_admin'])
 def delete(test_id):
     test = Test.query.get_or_404(test_id)
-    problem = Problem.query.get_or_404(test.problem_id)
-    topic = Topic.query.get_or_404(problem.topic_id)
-    db.session.delete(test)
+    test.status = 'deleted'
     db.session.commit()
     flash('Test deleted successfully', 'success')
-    return redirect(url_for('problem.show_problem', problem_id=problem.id, topic_id=topic.id))
+    return redirect(url_for('problem.show_problem', problem_id=test.problem_id, topic_id=test.problem.topic_id))

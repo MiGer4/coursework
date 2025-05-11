@@ -1,9 +1,9 @@
-{% extends "base.html" %} {% block title %}Login{% endblock %} 
+{% extends "base.html" %} {% block title %}Увійти{% endblock %} 
 {% block content %}
     <form method="POST">
-        <h3 align="center">Login</h3>
+        <h3 align="center">Увійти</h3>
         <div class="form-group">
-            <label for="email">Email Address</label>
+            <label for="email">Email адреса:</label>
             <input
                 type="email"
                 class="form-control"
@@ -13,7 +13,7 @@
             />
         </div>
         <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password">Пароль:</label>
             <input
                 type="password"
                 class="form-control"
@@ -23,6 +23,6 @@
             />
         </div>
         <br />
-        <button type="submit" class="btn btn-primary">Login</button>
+        <button type="submit" class="btn btn-primary">Увійти</button>
     </form>
 {% endblock %}

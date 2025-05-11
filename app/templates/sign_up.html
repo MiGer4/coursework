@@ -1,9 +1,9 @@
-{% extends "base.html" %} {% block title %}Sign Up{% endblock %} 
+{% extends "base.html" %} {% block title %}Зареєструватися{% endblock %} 
 {% block content %}
     <form method="POST">
-        <h3 align="center">Sign Up</h3>
+        <h3 align="center">Зареєструватися</h3>
         <div class="form-group">
-            <label for="email">Email Address</label>
+            <label for="email">Email:</label>
             <input
                 type="email"
                 class="form-control"
@@ -13,7 +13,7 @@
             />
         </div>
         <div class="form-group">
-            <label for="password1">Password</label>
+            <label for="password1">Пароль:</label>
             <input
                 type="password"
                 class="form-control"
@@ -23,7 +23,7 @@
             />
         </div>
             <div class="form-group">
-            <label for="password2">Password (Confirm)</label>
+            <label for="password2">Пароль (підвердити)</label>
             <input
                 type="password"
                 class="form-control"
@@ -33,6 +33,6 @@
             />
         </div>
         <br />
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Зареєструватися</button>
     </form>
 {% endblock %}

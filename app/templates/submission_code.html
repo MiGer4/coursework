@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Перегляд коду{% endblock %}
+{% block content %}
+<h3 align="center">Код розв'язку задачі</h3>
+<pre style="background-color: #f5f5f5; padding: 1em; border-radius: 5px;">
+{{ code }}
+</pre>
+<div class="d-flex justify-content-center">
+    <a href="{{ url_for('submissions.show_user_submissions', user_id = user.id) }}" class="btn btn-primary">Назад</a>
+</div>
+{% endblock %}

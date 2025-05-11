@@ -1,1 +1,50 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %}
+{% extends "base.html" %} {% block title %}Головна{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    {% if user.status == 'approved'%}
+        <h1 class="mb-4">Мої задачі</h1>
+        {% if task_progress %}
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered table-striped align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Назва задачі</th>
+                            <th scope="col">Тема</th>
+                            <th scope="col">Найкращий бал</th>
+                            <th scope="col">Дія</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in task_progress %}
+                            <tr class="{% if item.submission and item.submission.score == 100.0 %}table-success{% else %}table-warning{% endif %}">
+                                <td>{{ item.problem.problem_name }}</td>
+                                <td>{{ item.problem.topic.topic_name }}</td>
+                                <td>{{ item.submission.score }}</td>
+                                <td>
+                                    <a href="{{ url_for('problem.show_problem', problem_id=item.problem.id) }}" class="btn btn-sm btn-primary">Відкрити</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info" role="alert">
+                Наразі вам не призначено жодних задач.
+            </div>
+        {% endif %}
+    {% elif user.status == 'pending' %}
+        <h1 class="mb-4">Очікування підтвердження</h1>
+        <div class="alert alert-warning" role="alert">
+            Ваш статус - "Очікує підтвердження". Зачекайте, поки викладач підтвердить вашу реєстрацію.
+        </div>
+    {% elif user.status == 'deleted' %}
+        <h1 class="mb-4">Ви були видалені</h1>
+        <div class="alert alert-danger" role="alert">
+            Ви були видалені. Якщо ви вважаєте, що це помилка, будь ласка, зв'яжіться з викладачем.
+        </div>
+    {% elif user.status == 'banned' %}
+        <h1 class="mb-4">Ваша
+    {% endif %}
+</div>
+{% endblock%}

@@ -1,21 +1,21 @@
-{% extends "base.html" %} {% block title %}Update test{% endblock %}
+{% extends "base.html" %} {% block title %}Оновити тест{% endblock %}
 {% block content %}
 <div class="d-flex justify-content-center">
     <form action="{{ url_for('test.update', test_id=test.id) }}" method="post" class="w-50">
-        <h3 align="center">Update Test</h3>
-        <label for="input_data">Input:</label>
+        <h3 align="center">Змінити тест</h3>
+        <label for="input_data">Ввід:</label>
         <textarea
             name="input_data"
             class="form-control"
             required>{{test.values["input"]}}</textarea>
         
-        <label for="expected_output">Expected Output:</label>
+        <label for="expected_output">Очікуваний вивід:</label>
         <textarea
             name="expected_output"
             class="form-control"
             required>{{test.values["output"]}}</textarea>
 
-        <label for="points">Points</label>
+        <label for="points">Кількість балів:</label>
         <input 
             type="number"
             name="points"
@@ -24,8 +24,25 @@
             min="0"
             required
             value="{{ test.points }}">
-        
-        <button type="submit" class="btn btn-primary mt-2">Edit Test</button>
+        <br>
+        <div class="form-group">
+            <label for="status">Статус:</label>
+            <select
+                type="text"
+                class="form-control"
+                id="status"
+                name="status"
+                required
+            >
+                <option value="" >Оберіть статус</option>
+                <option value="active" {% if test.status == 'active'%} selected {% endif %}>Активний</option>
+                <option value="archived" {% if test.status == 'archived'%} selected {% endif %}>Заархівовано</option>
+                {% if user.role_id == 3 %}
+                    <option value="deleted" {% if test.status == 'deleted'%} selected {% endif %}>Видалено</option>
+                {% endif %}
+            </select>
+            <button type="submit" class="btn btn-primary mt-2">Змінити</button>
+        </div>
     </form>
 </div>
 {% endblock %}

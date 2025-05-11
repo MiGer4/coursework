@@ -1,8 +1,10 @@
+import random
+
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_login import login_user, logout_user, current_user, login_required
 
-from .models import User
+from .models import User, Topic, Problem, UserProblems
 from . import db
 
 auth = Blueprint('auth', __name__)
@@ -27,6 +29,16 @@ def login():
     return render_template("login.html", user=current_user)
 
 
+def assign_one_problem_per_topic(user_id):
+    topics = Topic.query.filter_by(status='active').all()
+    for topic in topics:
+        problems = Problem.query.filter_by(topic_id=topic.id, status='active').all()
+        if problems:
+            random_problem = random.choice(problems)
+            user_problem = UserProblems(user_id=user_id, problem_id=random_problem.id)
+            db.session.add(user_problem)
+    db.session.commit()
+
 @auth.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
     if request.method == "POST":
@@ -49,6 +61,7 @@ def sign_up():
             db.session.commit()
             login_user(new_user, remember=True)
             flash('Account created!', category='success')
+            assign_one_problem_per_topic(new_user.id)
             return redirect(url_for('views.index'))
     return render_template("sign_up.html", user=current_user)
 
