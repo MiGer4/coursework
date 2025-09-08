@@ -39,6 +39,9 @@
                         <div class="col">
                             <a class="mb-1 col" href="{{ url_for('users.show_user_problems', user_id=us.id) }}">Задачі</a>
                         </div>
+                        <div class="col">
+                            <a class="mb-1 col" href="{{ url_for('submissions.show_user_submissions', user_id=us.id) }}">Надсилання</a>
+                        </div>
                     {% endif %}
                 </div>
             </li>
