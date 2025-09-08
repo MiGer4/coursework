@@ -8,6 +8,8 @@ from . import db
 views = Blueprint('views', __name__)
 @views.route('/')
 def index():
+    if not current_user.is_authenticated:
+        return render_template("index.html", user=current_user)
     user_problem_ids = db.session.query(UserProblems.problem_id).filter_by(user_id=current_user.id).all()
     problem_ids = [pid for (pid,) in user_problem_ids]
 
